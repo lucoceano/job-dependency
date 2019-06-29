@@ -6,6 +6,7 @@ import (
 )
 
 var CantDependOnThemselves = fmt.Errorf("jobs can’t depend on themselves")
+var CantHaveCircularDependencies = fmt.Errorf("jobs can’t have circular dependencies.")
 
 func OrderJobs(jobs string, dependencies string) (string, error) {
 	if strings.Trim(dependencies, " ") == "" {
@@ -25,6 +26,10 @@ func OrderJobs(jobs string, dependencies string) (string, error) {
 			continue
 		}
 
+		if index == len(jobs)-1 && strings.Index(dependencies, job) >= 0 {
+			return "", CantHaveCircularDependencies
+		}
+
 		if strings.Index(dependencies, job) == -1 {
 			orderedJobs = appendDependencies(index, jobs, job+orderedJobs, dependenciesArray)
 		}
@@ -35,6 +40,7 @@ func OrderJobs(jobs string, dependencies string) (string, error) {
 
 func appendDependencies(index int, jobs string, orderedJobs string, dependenciesArray []string) string {
 	dependency := dependenciesArray[index]
+
 	if dependency != " " {
 		orderedJobs = dependency + orderedJobs
 		orderedJobs = appendDependencies(strings.Index(jobs, dependency), jobs, orderedJobs, dependenciesArray)

@@ -82,3 +82,38 @@ func TestJobsBDependsOnCAndCDependsOnFAndDDependsOnAAndEDependsOnB(t *testing.T)
 		t.Errorf("expected a(%d) < d(%d)", aIndex, dIndex)
 	}
 }
+
+func TestJobsWithoutCircularDependencyOnFCB(t *testing.T) {
+	orderedJobs, _ := OrderJobs("abcdef", " c a b")
+
+	aIndex := strings.Index(orderedJobs, "a")
+	cIndex := strings.Index(orderedJobs, "c")
+	bIndex := strings.Index(orderedJobs, "b")
+	fIndex := strings.Index(orderedJobs, "f")
+	dIndex := strings.Index(orderedJobs, "d")
+
+	if fIndex <= bIndex {
+		t.Errorf("expected b(%d) < f(%d)", fIndex, bIndex)
+	}
+
+	if bIndex <= cIndex {
+		t.Errorf("expected c(%d) < b(%d)", cIndex, bIndex)
+	}
+
+	if dIndex <= aIndex {
+		t.Errorf("expected a(%d) < d(%d)", aIndex, dIndex)
+	}
+}
+
+func TestJobsWithCircularDependencyOnFCB(t *testing.T) {
+	expected := ""
+	orderedJobs, err := OrderJobs("abcdef", " cfa b")
+
+	if expected != orderedJobs {
+		t.Errorf("expected '%s' got '%s'", expected, orderedJobs)
+	}
+
+	if err != CantHaveCircularDependencies {
+		t.Errorf("expected '%v' got '%v'", CantHaveCircularDependencies, err)
+	}
+}
