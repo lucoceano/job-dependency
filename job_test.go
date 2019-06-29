@@ -14,6 +14,24 @@ func TestNoJobs(t *testing.T) {
 	}
 }
 
+func TestDependenciesSizeBuggerThanJobsSize(t *testing.T) {
+	expected := "a"
+	orderedJobs, _ := OrderJobs("a", "abc")
+
+	if expected != orderedJobs {
+		t.Errorf("expected '%s' got '%s'", expected, orderedJobs)
+	}
+}
+
+func TestDependenciesSizeSmallerThanJobsSize(t *testing.T) {
+	expected := "abc"
+	orderedJobs, _ := OrderJobs("abc", "a")
+
+	if expected != orderedJobs {
+		t.Errorf("expected '%s' got '%s'", expected, orderedJobs)
+	}
+}
+
 func TestOneJob(t *testing.T) {
 	expected := "a"
 	orderedJobs, _ := OrderJobs("a", "")

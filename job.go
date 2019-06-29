@@ -9,7 +9,7 @@ var CantDependOnThemselves = fmt.Errorf("jobs can’t depend on themselves")
 var CantHaveCircularDependencies = fmt.Errorf("jobs can’t have circular dependencies.")
 
 func OrderJobs(jobs string, dependencies string) (string, error) {
-	if strings.Trim(dependencies, " ") == "" {
+	if strings.Trim(dependencies, " ") == "" || len(jobs) != len(dependencies) {
 		return jobs, nil
 	}
 
