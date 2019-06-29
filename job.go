@@ -21,16 +21,17 @@ func OrderJobs(jobs string, dependencies string) (string, error) {
 		if dependenciesArray[index] == job {
 			return "", CantDependOnThemselves
 		}
-
 		if strings.Index(orderedJobs, job) >= 0 {
 			continue
 		}
 
-		if index == len(jobs)-1 && strings.Index(dependencies, job) >= 0 {
+		jobDepIndex := strings.Index(dependencies, job)
+
+		if index == len(jobs)-1 && jobDepIndex >= 0 {
 			return "", CantHaveCircularDependencies
 		}
 
-		if strings.Index(dependencies, job) == -1 {
+		if jobDepIndex == -1 {
 			orderedJobs = appendDependencies(index, jobs, job+orderedJobs, dependenciesArray)
 		}
 	}

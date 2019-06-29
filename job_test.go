@@ -135,3 +135,9 @@ func TestJobsWithCircularDependencyOnFCB(t *testing.T) {
 		t.Errorf("expected '%v' got '%v'", CantHaveCircularDependencies, err)
 	}
 }
+
+func Benchmark(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = OrderJobs("abcdefghijklmnopqrstuvxz", " cfab                   ")
+	}
+}
