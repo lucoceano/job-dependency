@@ -1,7 +1,7 @@
 ## Go lang job dependency
 
 For this implementation was taking into account that a job can't be depended twice.
-The general idea was to increment the implementation wiht small steps, following each use case.
+The general idea was to increment the implementation with small steps, following each use case.
 
 For the ordering part, it searchs for the each non depended job and follows it dependency tree recursively, removing each dependency from being checked twice.
 
@@ -16,3 +16,8 @@ go test
 ```
 go test -bench=.
 ```
+
+
+#### golang version
+
+go version go1.12.5 darwin/amd64
